@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="timer-container">
+        <h1> Countdown Timer</h1>
+        <h2 id="countdown">00d 00h 00m 00s</h2>
+
+        <div class="buttons">
+            <button id="startButton">Start</button>
+            <button id="stopButton">Stop</button>
+        </div>
+    </div>
+
+    <script>
+let countdownDuration = 60 * 10; // 10 minutes in seconds
+let timeLeft = countdownDuration;
+let countdownInterval;
+let isCounting = false;
+
+const countdownElement = document.getElementById('countdown');
+const startButton = document.getElementById('startButton');
+const stopButton = document.getElementById('stopButton');
+
+// Function to format time as "Dd Hh Mm Ss"
+function formatTime(seconds) {
+    let days = Math.floor(seconds / (60 * 60 * 24));
+    let hours = Math.floor((seconds % (60 * 60 * 24)) / (60 * 60));
+    let minutes = Math.floor((seconds % (60 * 60)) / 60);
+    let secs = seconds % 60;
+    return `${days}d ${hours}h ${minutes}m ${secs < 10 ? '0' : ''}${secs}s`;
+}
+
+// Function to update the countdown display
+function updateCountdownDisplay() {
+    countdownElement.textContent = formatTime(timeLeft);
+}
+
+// Function to start the countdown
+function startCountdown() {
+    if (!isCounting) {
+        isCounting = true;
+        countdownInterval = setInterval(() => {
+            if (timeLeft > 0) {
+                timeLeft--;
+                updateCountdownDisplay();
+            } else {
+                clearInterval(countdownInterval);
+                countdownElement.textContent = "Time's Up!";
+                isCounting = false;
+            }
+        }, 1000);
+    }
+}
+
+// Function to stop the countdown
+function stopCountdown() {
+    clearInterval(countdownInterval);
+    isCounting = false;
+}
+
+// Event listeners for Start and Stop buttons
+startButton.addEventListener('click', startCountdown);
+stopButton.addEventListener('click', stopCountdown);
+
+// Initialize the countdown display
+updateCountdownDisplay();
+
+
+    </script>
+</body>
+</html>
